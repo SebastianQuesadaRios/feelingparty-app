@@ -25,5 +25,9 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     mongodbUri: process.env.MONGODB_URI || 'mongodb://localhost:27017/feelingparty'
+  },
+  nitro: {
+    preset: 'vercel'  // 💡 Esto indica a Nuxt que debe configurarse para Vercel
   }
-})
+});
+
