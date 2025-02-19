@@ -12,22 +12,28 @@ export default defineEventHandler(async (event) => {
       case 'nombre':
         query = { 'cliente.nombre': { $regex: termino, $options: 'i' } }
         break
-        case 'fecha':
-          // Convertir la fecha ingresada a formato UTC sin hora
-          const fechaInicio = new Date(termino)
-          fechaInicio.setUTCHours(0, 0, 0, 0) // Establecer la hora al inicio del día
-        
-          // Establecer el final del día (23:59:59.999)
-          const fechaFin = new Date(fechaInicio)
-          fechaFin.setUTCHours(23, 59, 59, 999)
-        
-          query = {
-            fecha: {
-              $gte: fechaInicio,
-              $lt: fechaFin
-            }
-          }
-          break
+      case 'fecha':
+        if (termino && typeof termino === 'string') {
+          const fechaBusqueda = new Date(termino);
+    
+          // Establecer el inicio del día (00:00:00)
+          const fechaInicio = new Date(fechaBusqueda.setHours(0, 0, 0, 0));
+    
+          // Establecer el final del día (23:59:59)
+          const fechaFin = new Date(fechaBusqueda.setHours(23, 59, 59, 999));
+  
+           console.log('Fecha recibida:', termino);
+            console.log('Fecha inicio:', fechaInicio);
+            console.log('Fecha fin:', fechaFin);
+  
+            query = {
+              fecha: {
+               $gte: fechaInicio,
+               $lte: fechaFin
+                }
+             };
+        }
+        break;
     }
 
     const cotizaciones = await Cotizacion.find(query)
@@ -42,4 +48,4 @@ export default defineEventHandler(async (event) => {
       message: 'Error al buscar cotizaciones'
     })
   }
-}) 
+})

@@ -126,23 +126,30 @@ const placeholderBusqueda = computed(() => {
 
 const buscar = async () => {
   try {
-    if (!terminoBusqueda.value) return
+    if (!terminoBusqueda.value) return;
+
+    let body: any = { termino: terminoBusqueda.value, tipo: tipoBusqueda.value };
+
+    if (tipoBusqueda.value === 'fecha') {
+      const fechaSeleccionada = new Date(terminoBusqueda.value);
+      const inicioDia = new Date(fechaSeleccionada.setHours(0, 0, 0, 0)).toISOString();
+      const finDia = new Date(fechaSeleccionada.setHours(23, 59, 59, 999)).toISOString();
+
+      body = { inicioDia, finDia, tipo: tipoBusqueda.value };
+    }
 
     const response = await $fetch<Cotizacion[]>('/api/cotizaciones/buscar', {
       method: 'POST',
-      body: {
-        termino: terminoBusqueda.value,
-        tipo: tipoBusqueda.value
-      }
-    })
+      body
+    });
 
-    resultados.value = response
-    buscado.value = true
+    resultados.value = response;
+    buscado.value = true;
   } catch (error) {
-    console.error('Error al buscar:', error)
-    toast.error('Error al buscar cotizaciones')
+    console.error('Error al buscar:', error);
+    toast.error('Error al buscar cotizaciones');
   }
-}
+};
 
 const confirmarEliminacion = (cotizacion: Cotizacion) => {
   cotizacionAEliminar.value = cotizacion
