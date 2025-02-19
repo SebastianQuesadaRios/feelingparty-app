@@ -210,7 +210,7 @@ const formatDate = (date?: Date) => {
     day: 'numeric'
   })
 }
-//hola
+
 const formatPrice = (price: number) => {
   return price.toLocaleString('es-ES', {
     minimumFractionDigits: 2,
