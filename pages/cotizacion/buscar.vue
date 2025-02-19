@@ -155,12 +155,17 @@ const buscar = async () => {
   try {
     if (!terminoBusqueda.value) return
 
+    let termino = terminoBusqueda.value
+
+    if (tipoBusqueda.value === 'fecha') {
+      // Convertir la fecha a formato YYYY-MM-DD
+      const fechaSeleccionada = new Date(terminoBusqueda.value)
+      termino = fechaSeleccionada.toISOString().split('T')[0] // Solo la parte de la fecha
+    }
+
     const response = await $fetch<Cotizacion[]>('/api/cotizaciones/buscar', {
       method: 'POST',
-      body: {
-        termino: terminoBusqueda.value,
-        tipo: tipoBusqueda.value
-      }
+      body: { termino, tipo: tipoBusqueda.value }
     })
 
     cotizaciones.value = response
@@ -170,6 +175,7 @@ const buscar = async () => {
     toast.error('Error al buscar cotizaciones')
   }
 }
+
 
 const previsualizarCotizacion = (cotizacion: Cotizacion) => {
   cotizacionSeleccionada.value = cotizacion

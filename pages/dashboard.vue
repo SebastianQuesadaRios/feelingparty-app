@@ -47,7 +47,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
               </svg>
             </div>
-            <h3 class="card-title">Buscar Cotización</h3>
+            <h3 class="card-title">Buscar y Editar Cotización</h3>
             <p class="card-description">Encuentra y gestiona cotizaciones existentes</p>
           </button>
 

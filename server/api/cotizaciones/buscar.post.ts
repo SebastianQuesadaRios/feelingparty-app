@@ -12,17 +12,22 @@ export default defineEventHandler(async (event) => {
       case 'nombre':
         query = { 'cliente.nombre': { $regex: termino, $options: 'i' } }
         break
-      case 'fecha':
-        const fecha = new Date(termino)
-        const fechaFin = new Date(fecha)
-        fechaFin.setDate(fecha.getDate() + 1)
-        query = {
-          fecha: {
-            $gte: fecha,
-            $lt: fechaFin
+        case 'fecha':
+          // Convertir la fecha ingresada a formato UTC sin hora
+          const fechaInicio = new Date(termino)
+          fechaInicio.setUTCHours(0, 0, 0, 0) // Establecer la hora al inicio del día
+        
+          // Establecer el final del día (23:59:59.999)
+          const fechaFin = new Date(fechaInicio)
+          fechaFin.setUTCHours(23, 59, 59, 999)
+        
+          query = {
+            fecha: {
+              $gte: fechaInicio,
+              $lt: fechaFin
+            }
           }
-        }
-        break
+          break
     }
 
     const cotizaciones = await Cotizacion.find(query)
