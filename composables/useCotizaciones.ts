@@ -19,7 +19,7 @@ export default function useCotizaciones() {
     try {
       // Asegurarnos de que subtotal y total estén actualizados
       cotizacion.subtotal = cotizacion.total
-      
+
       const response = await $fetch<Cotizacion>('/api/cotizaciones', {
         method: 'POST',
         body: cotizacion
@@ -33,28 +33,37 @@ export default function useCotizaciones() {
 
   const generarPDF = async (cotizacion: Cotizacion) => {
     try {
-      const element = document.querySelector('.cotizacion-preview')
-      if (!element) return
+      // await new Promise(resolve => setTimeout(resolve, 1000));
+      const element = document.querySelector('.cotizacion-preview') as HTMLElement
+      if (!element) {
+        console.error('Elemento .cotizacion-preview no encontrado')
+        return
+      }
 
-      const canvas = await html2canvas(element, {
-        scale: 2,
-        useCORS: true,
-        logging: false
-      })
+      try {
+        const canvas = await html2canvas(element, {
+          scale: 2,
+          useCORS: true,
+          logging: false
+        })
 
-      const imgData = canvas.toDataURL('image/png')
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4'
-      })
+        const imgData = canvas.toDataURL('image/png')
+        const pdf = new jsPDF({
+          orientation: 'portrait',
+          unit: 'mm',
+          format: 'a4'
+        })
 
-      const imgProps = pdf.getImageProperties(imgData)
-      const pdfWidth = pdf.internal.pageSize.getWidth()
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width
+        const imgProps = pdf.getImageProperties(imgData)
+        const pdfWidth = pdf.internal.pageSize.getWidth()
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width
 
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight)
-      pdf.save(`Cotizacion-${cotizacion.numero}.pdf`)
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight)
+        pdf.save(`Cotizacion-${cotizacion.numero || 'SinNumero'}.pdf`)
+      } catch (error) {
+        console.error('Error al generar canvas:', error)
+        throw error
+      }
     } catch (error) {
       console.error('Error al generar PDF:', error)
       throw error
@@ -75,12 +84,12 @@ export default function useCotizaciones() {
       throw error
     }
   }
-  
+
   return {
     cotizacionActual,
     guardarCotizacion,
     generarPDF,
     previsualizarCotizacion,
-    eliminarCotizacion  
+    eliminarCotizacion
   }
-} 
+}

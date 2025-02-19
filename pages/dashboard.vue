@@ -62,6 +62,18 @@
             <h3 class="card-title">Eliminar Cotización</h3>
             <p class="card-description">Elimina cotizaciones que ya no necesites</p>
           </button>
+
+          <!-- Descargar Cotización -->
+          <button @click="router.push('/cotizacion/descargar')"
+                  class="dashboard-card group">
+            <div class="card-icon bg-green-100 text-green-600">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-5l-4 4-4-4m-9-5h18" />
+              </svg>
+            </div>
+            <h3 class="card-title">Descargar Cotización</h3>
+            <p class="card-description">Descarga tus cotizaciones en formato PDF</p>
+          </button>
         </div>
       </div>
     </main>
