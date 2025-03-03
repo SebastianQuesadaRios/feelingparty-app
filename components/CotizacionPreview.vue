@@ -59,8 +59,7 @@
         <p>
           Para iniciar el proceso de elaboración/diseño, se requiere un anticipo 
           del 70% del valor total de la cotización. El pago del 30% de saldo 
-          debe ser efectuado un día antes de la entrega del producto o la 
-          finalización del servicio.
+          debe ser efectuado un día antes de la entrega del servicio.
         </p>
         <p>
           Los pagos pueden realizarse a través de la cuenta Bancolombia de 
